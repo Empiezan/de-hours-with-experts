@@ -16,8 +16,8 @@ public class NextBiggestNumber {
         int originalNum = i;
         int nextBiggestNum = originalNum;
         // The digit that will replace a more significant digit `digitToDemote`, if a larger # exists
-        int digitToSwap = -1;
-        // The digit that will be replaced by `digitToSwap`
+        int digitToPromote = -1;
+        // The digit that will be replaced by `digitToPromote`
         int digitToDemote = originalNum % 10;
         // Min heap to sort the digits less significant than `digitToDemote`
         PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
@@ -37,21 +37,21 @@ public class NextBiggestNumber {
         }
         while (prefix != 0);
 
-        // Find digitToSwap
+        // Find digitToPromote
         for (int index = 0; index < numberOfDigits; index++) {
             int currentDigit = nextBiggestNum % 10;
-            boolean foundDigitToSwap = currentDigit > digitToDemote && currentDigit > digitToSwap;
-            digitToSwap = currentDigit;
+            boolean foundDigitToSwap = currentDigit > digitToDemote && currentDigit > digitToPromote;
+            digitToPromote = currentDigit;
             if (foundDigitToSwap) break;
             nextBiggestNum /= 10;
         }
 
         // Build next largest number
-        nextBiggestNum = prefix * 10 + digitToSwap;
+        nextBiggestNum = prefix * 10 + digitToPromote;
         while (!minHeap.isEmpty()) {
             int nextDigit = minHeap.remove();
-            if (nextDigit == digitToSwap) {
-                digitToSwap = -1;
+            if (nextDigit == digitToPromote) {
+                digitToPromote = -1;
                 continue;
             }
             nextBiggestNum = nextBiggestNum * 10 + nextDigit;
